@@ -7,23 +7,23 @@ import (
 )
 
 type TweetManager struct {
-	textTweetsMap map[string][]*domain.TextTweet
-	textTweets    []*domain.TextTweet
+	TweetsMap map[string][]domain.Tweet
+	Tweets    []domain.Tweet
 }
 
 func NewTweetManager() *TweetManager {
-	tm := &TweetManager{textTweets: make([]*domain.TextTweet, 0), textTweetsMap: make(map[string][]*domain.TextTweet)}
+	tm := &TweetManager{Tweets: make([]domain.Tweet, 0), TweetsMap: make(map[string][]domain.Tweet)}
 	return tm
 }
 
-func (tm *TweetManager) PublishTweet(tweetToPublish *domain.TextTweet) (int, error) {
+func (tm *TweetManager) PublishTweet(tweetToPublish domain.Tweet) (int, error) {
 
 	now := time.Now()
-	tweetToPublish.Date = &now
-	tweetToPublish.ID = len(tm.textTweets) + 1
-	tm.textTweets = append(tm.textTweets, tweetToPublish)
+	tweetToPublish.SetDate(&now)
+	tweetToPublish.SetID(len(tm.Tweets) + 1)
 
-	tm.textTweetsMap[tweetToPublish.User] = tm.GetTweetsByUser(tweetToPublish.User)
+	tm.Tweets = append(tm.Tweets, tweetToPublish)
+	tm.TweetsMap[tweetToPublish.GetUser()] = tm.GetTweetsByUser(tweetToPublish.GetUser())
 
 	/*if tweet.User == "" {
 		return fmt.Errorf("user is required")
@@ -36,38 +36,42 @@ func (tm *TweetManager) PublishTweet(tweetToPublish *domain.TextTweet) (int, err
 	}
 
 	return nil*/
-	return tweetToPublish.ID, fmt.Errorf("nil")
+	return tweetToPublish.GetID(), fmt.Errorf("nil")
 }
 
-func (tm *TweetManager) GetTweets() []*domain.TextTweet {
-	return tm.textTweets
+func (tm *TweetManager) GetTweets() []domain.Tweet {
+	return tm.Tweets
 }
 
-func (tm *TweetManager) GetTweetById(id int) *domain.TextTweet {
+func (tm *TweetManager) GetLastTweet() domain.Tweet {
+	return tm.Tweets[len(tm.Tweets)-1]
+}
 
-	return tm.textTweets[id-1]
+func (tm *TweetManager) GetTweetById(id int) domain.Tweet {
+
+	return tm.Tweets[id-1]
 
 }
 
 func (tm *TweetManager) CountTweetsByUser(user string) int {
 
 	var sum int = 0
-	for _, valor := range tm.textTweets {
+	for _, valor := range tm.Tweets {
 
-		if valor.User == user {
+		if valor.GetUser() == user {
 			sum++
 		}
 	}
 	return sum
 }
 
-func (tm *TweetManager) GetTweetsByUser(user string) []*domain.TextTweet {
+func (tm *TweetManager) GetTweetsByUser(user string) []domain.Tweet {
 
-	var aux []*domain.TextTweet
+	var aux []domain.Tweet
 
-	for _, valor := range tm.textTweets {
+	for _, valor := range tm.Tweets {
 
-		if valor.User == user {
+		if valor.GetUser() == user {
 			aux = append(aux, valor)
 		}
 	}

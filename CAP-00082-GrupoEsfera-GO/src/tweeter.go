@@ -11,17 +11,18 @@ func main() {
 	shell := ishell.New()
 	shell.SetPrompt("Tweeter >> ")
 	shell.Print("Type 'help' to know commands\n")
+	tm := service.NewTweetManager()
 
 	shell.AddCmd(&ishell.Cmd{
 		Name: "publishTweet",
 		Help: "Publishes a tweet",
 		Func: func(c *ishell.Context) {
 
-			var tweet *domain.TextTweet
+			var textTweet *domain.TextTweet
 
 			defer c.ShowPrompt(true)
 
-			c.Print("Write your tweet: ")
+			c.Print("Write your textTweet: ")
 
 			tweetText := c.ReadLine()
 
@@ -29,9 +30,9 @@ func main() {
 
 			tweetUser := c.ReadLine()
 
-			tweet = domain.NewTweet(tweetUser, tweetText)
+			textTweet = domain.NewTweet(tweetUser, tweetText)
 
-			service.PublishTweet(tweet)
+			tm.PublishTweet(textTweet)
 
 			c.Print("TextTweet sent\n")
 
@@ -46,9 +47,9 @@ func main() {
 
 			defer c.ShowPrompt(true)
 
-			tweet := service.GetTweet()
+			lastTextTweet := tm.GetLastTweet()
 
-			c.Println(tweet)
+			c.Println(lastTextTweet)
 
 			return
 		},
