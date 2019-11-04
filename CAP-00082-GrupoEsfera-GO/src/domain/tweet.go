@@ -28,7 +28,7 @@ type ImageTweet struct {
 
 type QuoteTweet struct {
 	TextTweet
-	citado TextTweet
+	citado Tweet
 }
 
 func (tweet *TextTweet) SetDate(newDate *time.Time) {
@@ -75,6 +75,6 @@ func NewImageTweet(user, text, image string) *ImageTweet {
 	return &ImageTweet{TextTweet: TextTweet{User: user, Text: text}, Url: image}
 }
 
-func NewQuoteTweet(user string, text string, citado TextTweet) *QuoteTweet {
+func NewQuoteTweet(user string, text string, citado Tweet) *QuoteTweet {
 	return &QuoteTweet{TextTweet: TextTweet{User: user, Text: text}, citado: citado}
 }

@@ -57,7 +57,7 @@ func TestImageTweetPrintsUserTextAndImageURL(t *testing.T) {
 func TestQuoteTweetPrintsUserTextAndQuotedTweet(t *testing.T) {
 	// Initialization
 	quotedTweet := domain.NewTextTweet("grupoesfera", "This is my tweet")
-	tweet := domain.NewQuoteTweet("nick", "Awesome", *quotedTweet)
+	tweet := domain.NewQuoteTweet("nick", "Awesome", quotedTweet)
 	// Operation
 	text := tweet.PrintableTweet()
 	// Validation
