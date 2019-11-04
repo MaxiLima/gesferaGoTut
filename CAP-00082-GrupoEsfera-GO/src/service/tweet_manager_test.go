@@ -12,7 +12,7 @@ import (
 /*func TestPublishedTweetIsSaved(t *testing.T) {
 
 	// Initialization
-	var tweet *domain.Tweet
+	var tweet *domain.TextTweet
 	user := "grupoesfera"
 	text := "This is my first tweet"
 	tweet = domain.NewTweet(user, text)
@@ -36,7 +36,7 @@ import (
 
 func TestTweetWithoutUserIsNotPublished(t *testing.T) {
 	// Initialization
-	var tweet *domain.Tweet
+	var tweet *domain.TextTweet
 
 	var user string
 	text := "This is my first tweet"
@@ -62,7 +62,7 @@ func TestTweetWithoutUserIsNotPublished(t *testing.T) {
 func TestTweetWithoutTextIsNotPublished(t *testing.T) {
 
 	// Initialization
-	var tweet *domain.Tweet
+	var tweet *domain.TextTweet
 
 	var text string
 	user := "Maxo"
@@ -87,7 +87,7 @@ func TestTweetWithoutTextIsNotPublished(t *testing.T) {
 
 func TestTweetWhichExceeding140CharactersIsNotPublished(t *testing.T) {
 	// Initialization
-	var tweet *domain.Tweet
+	var tweet *domain.TextTweet
 
 	var text string
 	user := "Maxo"
@@ -116,7 +116,7 @@ func TestCanPublishAndRetrieveMoreThanOneTweet(t *testing.T) {
 
 	tm := service.NewTweetManager()
 
-	var tweet, secondTweet *domain.Tweet // Fill the tweets with data
+	var tweet, secondTweet *domain.TextTweet // Fill the textTweets with data
 
 	tweet = domain.NewTweet("Maxi", "tweet1")
 	secondTweet = domain.NewTweet("Maxi", "tweet2")
@@ -139,7 +139,7 @@ func TestCanPublishAndRetrieveMoreThanOneTweet(t *testing.T) {
 	// Same for secondPublishedTweet
 }
 
-func validTweet(t *testing.T, tweet *domain.Tweet, user, text string) {
+func validTweet(t *testing.T, tweet *domain.TextTweet, user, text string) {
 
 	assert.Equal(t, user, tweet.User)
 	assert.Equal(t, text, tweet.Text)
@@ -152,7 +152,7 @@ func TestCanRetrieveTweetById(t *testing.T) {
 
 	tm := service.NewTweetManager()
 
-	var tweet *domain.Tweet
+	var tweet *domain.TextTweet
 	var id int
 
 	user := "grupoesfera"
@@ -169,7 +169,7 @@ func TestCanRetrieveTweetById(t *testing.T) {
 	validTweetId(t, publishedTweet, id, user, text)
 }
 
-func validTweetId(t *testing.T, tweet *domain.Tweet, id int, user, text string) {
+func validTweetId(t *testing.T, tweet *domain.TextTweet, id int, user, text string) {
 
 	assert.Equal(t, id, tweet.ID)
 	assert.Equal(t, user, tweet.User)
@@ -181,7 +181,7 @@ func TestCanCountTheTweetsSentByAnUser(t *testing.T) {
 	// Initialization
 
 	tm := service.NewTweetManager()
-	var tweet, secondTweet, thirdTweet *domain.Tweet
+	var tweet, secondTweet, thirdTweet *domain.TextTweet
 	user := "grupoesfera"
 	anotherUser := "nick"
 	text := "This is my first tweet"
@@ -205,19 +205,19 @@ func TestCanRetrieveTheTweetsSentByAnUser(t *testing.T) {
 
 	tm := service.NewTweetManager()
 
-	var tweet, secondTweet, thirdTweet *domain.Tweet
+	var textTweet, secondTextTweet, thirdTextTweet *domain.TextTweet
 	user := "grupoesfera"
 	anotherUser := "nick"
-	text := "This is my first tweet"
-	secondText := "This is my second tweet"
-	tweet = domain.NewTweet(user, text)
-	secondTweet = domain.NewTweet(user, secondText)
-	thirdTweet = domain.NewTweet(anotherUser, text)
-	// publish the 3 tweets
+	text := "This is my first textTweet"
+	secondText := "This is my second textTweet"
+	textTweet = domain.NewTweet(user, text)
+	secondTextTweet = domain.NewTweet(user, secondText)
+	thirdTextTweet = domain.NewTweet(anotherUser, text)
+	// publish the 3 textTweets
 
-	tm.PublishTweet(tweet)
-	tm.PublishTweet(secondTweet)
-	tm.PublishTweet(thirdTweet)
+	tm.PublishTweet(textTweet)
+	tm.PublishTweet(secondTextTweet)
+	tm.PublishTweet(thirdTextTweet)
 
 	// Operation
 	tweets := tm.GetTweetsByUser(user)

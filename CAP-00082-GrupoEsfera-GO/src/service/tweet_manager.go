@@ -7,23 +7,23 @@ import (
 )
 
 type TweetManager struct {
-	tweetsMap map[string][]*domain.Tweet
-	tweets    []*domain.Tweet
+	textTweetsMap map[string][]*domain.TextTweet
+	textTweets    []*domain.TextTweet
 }
 
 func NewTweetManager() *TweetManager {
-	tm := &TweetManager{tweets: make([]*domain.Tweet, 0), tweetsMap: make(map[string][]*domain.Tweet)}
+	tm := &TweetManager{textTweets: make([]*domain.TextTweet, 0), textTweetsMap: make(map[string][]*domain.TextTweet)}
 	return tm
 }
 
-func (tm *TweetManager) PublishTweet(tweetToPublish *domain.Tweet) (int, error) {
+func (tm *TweetManager) PublishTweet(tweetToPublish *domain.TextTweet) (int, error) {
 
 	now := time.Now()
 	tweetToPublish.Date = &now
-	tweetToPublish.ID = len(tm.tweets) + 1
-	tm.tweets = append(tm.tweets, tweetToPublish)
+	tweetToPublish.ID = len(tm.textTweets) + 1
+	tm.textTweets = append(tm.textTweets, tweetToPublish)
 
-	tm.tweetsMap[tweetToPublish.User] = tm.GetTweetsByUser(tweetToPublish.User)
+	tm.textTweetsMap[tweetToPublish.User] = tm.GetTweetsByUser(tweetToPublish.User)
 
 	/*if tweet.User == "" {
 		return fmt.Errorf("user is required")
@@ -39,20 +39,20 @@ func (tm *TweetManager) PublishTweet(tweetToPublish *domain.Tweet) (int, error) 
 	return tweetToPublish.ID, fmt.Errorf("nil")
 }
 
-func (tm *TweetManager) GetTweets() []*domain.Tweet {
-	return tm.tweets
+func (tm *TweetManager) GetTweets() []*domain.TextTweet {
+	return tm.textTweets
 }
 
-func (tm *TweetManager) GetTweetById(id int) *domain.Tweet {
+func (tm *TweetManager) GetTweetById(id int) *domain.TextTweet {
 
-	return tm.tweets[id-1]
+	return tm.textTweets[id-1]
 
 }
 
 func (tm *TweetManager) CountTweetsByUser(user string) int {
 
 	var sum int = 0
-	for _, valor := range tm.tweets {
+	for _, valor := range tm.textTweets {
 
 		if valor.User == user {
 			sum++
@@ -61,11 +61,11 @@ func (tm *TweetManager) CountTweetsByUser(user string) int {
 	return sum
 }
 
-func (tm *TweetManager) GetTweetsByUser(user string) []*domain.Tweet {
+func (tm *TweetManager) GetTweetsByUser(user string) []*domain.TextTweet {
 
-	var aux []*domain.Tweet
+	var aux []*domain.TextTweet
 
-	for _, valor := range tm.tweets {
+	for _, valor := range tm.textTweets {
 
 		if valor.User == user {
 			aux = append(aux, valor)

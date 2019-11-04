@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/abiosoft/ishell"
-	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/domain"
-	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/service"
+	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/domain"
+	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/service"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 		Help: "Publishes a tweet",
 		Func: func(c *ishell.Context) {
 
-			var tweet *domain.Tweet
+			var tweet *domain.TextTweet
 
 			defer c.ShowPrompt(true)
 
@@ -33,7 +33,7 @@ func main() {
 
 			service.PublishTweet(tweet)
 
-			c.Print("Tweet sent\n")
+			c.Print("TextTweet sent\n")
 
 			return
 		},
