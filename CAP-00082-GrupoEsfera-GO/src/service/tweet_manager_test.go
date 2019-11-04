@@ -15,7 +15,7 @@ import (
 	var tweet *domain.TextTweet
 	user := "grupoesfera"
 	text := "This is my first tweet"
-	tweet = domain.NewTweet(user, text)
+	tweet = domain.NewTextTweet(user, text)
 
 	// Operation
 	service.PublishTweet(tweet)
@@ -40,7 +40,7 @@ func TestTweetWithoutUserIsNotPublished(t *testing.T) {
 
 	var user string
 	text := "This is my first tweet"
-	tweet = domain.NewTweet(user, text)
+	tweet = domain.NewTextTweet(user, text)
 
 	// Operation
 	var err error
@@ -66,7 +66,7 @@ func TestTweetWithoutTextIsNotPublished(t *testing.T) {
 
 	var text string
 	user := "Maxo"
-	tweet = domain.NewTweet(user, text)
+	tweet = domain.NewTextTweet(user, text)
 
 	// Operation
 	var err error
@@ -92,7 +92,7 @@ func TestTweetWhichExceeding140CharactersIsNotPublished(t *testing.T) {
 	var text string
 	user := "Maxo"
 	text = "asdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkdasdasljknsdkfjnasdjkfnsdkjfnsdkjnsdkjfnsdkjfnsjkd"
-	tweet = domain.NewTweet(user, text)
+	tweet = domain.NewTextTweet(user, text)
 
 	// Operation
 	var err error
@@ -118,8 +118,8 @@ func TestCanPublishAndRetrieveMoreThanOneTweet(t *testing.T) {
 
 	var tweet, secondTweet *domain.TextTweet // Fill the Tweets with data
 
-	tweet = domain.NewTweet("Maxi", "tweet1")
-	secondTweet = domain.NewTweet("Maxi", "tweet2")
+	tweet = domain.NewTextTweet("Maxi", "tweet1")
+	secondTweet = domain.NewTextTweet("Maxi", "tweet2")
 
 	// Operation
 	tm.PublishTweet(tweet)
@@ -158,7 +158,7 @@ func TestCanRetrieveTweetById(t *testing.T) {
 	user := "grupoesfera"
 	text := "This is my first tweet"
 
-	tweet = domain.NewTweet(user, text)
+	tweet = domain.NewTextTweet(user, text)
 
 	// Operation
 	id, _ = tm.PublishTweet(tweet)
@@ -186,9 +186,9 @@ func TestCanCountTheTweetsSentByAnUser(t *testing.T) {
 	anotherUser := "nick"
 	text := "This is my first tweet"
 	secondText := "This is my second tweet"
-	tweet = domain.NewTweet(user, text)
-	secondTweet = domain.NewTweet(user, secondText)
-	thirdTweet = domain.NewTweet(anotherUser, text)
+	tweet = domain.NewTextTweet(user, text)
+	secondTweet = domain.NewTextTweet(user, secondText)
+	thirdTweet = domain.NewTextTweet(anotherUser, text)
 	tm.PublishTweet(tweet)
 	tm.PublishTweet(secondTweet)
 	tm.PublishTweet(thirdTweet)
@@ -210,9 +210,9 @@ func TestCanRetrieveTheTweetsSentByAnUser(t *testing.T) {
 	anotherUser := "nick"
 	text := "This is my first textTweet"
 	secondText := "This is my second textTweet"
-	textTweet = domain.NewTweet(user, text)
-	secondTextTweet = domain.NewTweet(user, secondText)
-	thirdTextTweet = domain.NewTweet(anotherUser, text)
+	textTweet = domain.NewTextTweet(user, text)
+	secondTextTweet = domain.NewTextTweet(user, secondText)
+	thirdTextTweet = domain.NewTextTweet(anotherUser, text)
 	// publish the 3 Tweets
 
 	tm.PublishTweet(textTweet)

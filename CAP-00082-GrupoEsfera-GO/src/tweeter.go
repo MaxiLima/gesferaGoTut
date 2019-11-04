@@ -30,7 +30,7 @@ func main() {
 
 			tweetUser := c.ReadLine()
 
-			textTweet = domain.NewTweet(tweetUser, tweetText)
+			textTweet = domain.NewTextTweet(tweetUser, tweetText)
 
 			tm.PublishTweet(textTweet)
 
