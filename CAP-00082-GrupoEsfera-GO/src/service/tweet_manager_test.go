@@ -2,15 +2,14 @@ package service_test
 
 import (
 	"fmt"
+	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/domain"
+	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/service"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/domain"
-	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/service"
 )
 
-/*
-func TestPublishedTweetIsSaved(t *testing.T) {
+/*func TestPublishedTweetIsSaved(t *testing.T) {
 
 	// Initialization
 	var tweet *domain.Tweet
@@ -34,6 +33,7 @@ func TestPublishedTweetIsSaved(t *testing.T) {
 
 	//assert.Equal(t, publishedTweet.User)
 }
+
 func TestTweetWithoutUserIsNotPublished(t *testing.T) {
 	// Initialization
 	var tweet *domain.Tweet
@@ -109,22 +109,24 @@ func TestTweetWhichExceeding140CharactersIsNotPublished(t *testing.T) {
 
 	//Assert
 	assert.EqualError(t, err, "text cannot exced 140 chars")
-}
-*/
+}*/
+
 func TestCanPublishAndRetrieveMoreThanOneTweet(t *testing.T) {
 	// Initialization
-	service.Initialize()
+
+	tm := service.NewTweetManager()
+
 	var tweet, secondTweet *domain.Tweet // Fill the tweets with data
 
 	tweet = domain.NewTweet("Maxi", "tweet1")
 	secondTweet = domain.NewTweet("Maxi", "tweet2")
 
 	// Operation
-	service.PublishTweet(tweet)
-	service.PublishTweet(secondTweet)
+	tm.PublishTweet(tweet)
+	tm.PublishTweet(secondTweet)
 
 	// Validation
-	publishedTweets := service.GetTweets()
+	publishedTweets := tm.GetTweets()
 	if len(publishedTweets) != 2 {
 		t.Errorf("Expected size is 2 but was %d", len(publishedTweets))
 		return
@@ -147,7 +149,8 @@ func validTweet(t *testing.T, tweet *domain.Tweet, user, text string) {
 func TestCanRetrieveTweetById(t *testing.T) {
 
 	// Initialization
-	service.Initialize()
+
+	tm := service.NewTweetManager()
 
 	var tweet *domain.Tweet
 	var id int
@@ -158,10 +161,10 @@ func TestCanRetrieveTweetById(t *testing.T) {
 	tweet = domain.NewTweet(user, text)
 
 	// Operation
-	id, _ = service.PublishTweet(tweet)
+	id, _ = tm.PublishTweet(tweet)
 
 	// Validation
-	publishedTweet := service.GetTweetById(id)
+	publishedTweet := tm.GetTweetById(id)
 
 	validTweetId(t, publishedTweet, id, user, text)
 }
@@ -176,7 +179,8 @@ func validTweetId(t *testing.T, tweet *domain.Tweet, id int, user, text string) 
 
 func TestCanCountTheTweetsSentByAnUser(t *testing.T) {
 	// Initialization
-	service.Initialize()
+
+	tm := service.NewTweetManager()
 	var tweet, secondTweet, thirdTweet *domain.Tweet
 	user := "grupoesfera"
 	anotherUser := "nick"
@@ -185,11 +189,11 @@ func TestCanCountTheTweetsSentByAnUser(t *testing.T) {
 	tweet = domain.NewTweet(user, text)
 	secondTweet = domain.NewTweet(user, secondText)
 	thirdTweet = domain.NewTweet(anotherUser, text)
-	service.PublishTweet(tweet)
-	service.PublishTweet(secondTweet)
-	service.PublishTweet(thirdTweet)
+	tm.PublishTweet(tweet)
+	tm.PublishTweet(secondTweet)
+	tm.PublishTweet(thirdTweet)
 	// Operation
-	count := service.CountTweetsByUser(user)
+	count := tm.CountTweetsByUser(user)
 	// Validation
 	if count != 2 {
 		t.Errorf("Expected count is 2 but was %d", count)
@@ -198,7 +202,9 @@ func TestCanCountTheTweetsSentByAnUser(t *testing.T) {
 
 func TestCanRetrieveTheTweetsSentByAnUser(t *testing.T) {
 	// Initialization
-	service.Initialize()
+
+	tm := service.NewTweetManager()
+
 	var tweet, secondTweet, thirdTweet *domain.Tweet
 	user := "grupoesfera"
 	anotherUser := "nick"
@@ -209,12 +215,12 @@ func TestCanRetrieveTheTweetsSentByAnUser(t *testing.T) {
 	thirdTweet = domain.NewTweet(anotherUser, text)
 	// publish the 3 tweets
 
-	service.PublishTweet(tweet)
-	service.PublishTweet(secondTweet)
-	service.PublishTweet(thirdTweet)
+	tm.PublishTweet(tweet)
+	tm.PublishTweet(secondTweet)
+	tm.PublishTweet(thirdTweet)
 
 	// Operation
-	tweets := service.GetTweetsByUser(user)
+	tweets := tm.GetTweetsByUser(user)
 
 	// Validation
 	if len(tweets) != 2 { /* handle error */

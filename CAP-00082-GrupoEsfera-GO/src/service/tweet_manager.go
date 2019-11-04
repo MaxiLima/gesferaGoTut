@@ -2,28 +2,28 @@ package service
 
 import (
 	"fmt"
+	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/domain"
 	"time"
-
-	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/domain"
 )
 
-//var tweet *domain.Tweet
-
-var tweetsMap map[string][]*domain.Tweet
-var tweets []*domain.Tweet
-
-func Initialize() {
-	tweets = make([]*domain.Tweet, 0)
-	tweetsMap = make(map[string][]*domain.Tweet)
+type TweetManager struct {
+	tweetsMap map[string][]*domain.Tweet
+	tweets    []*domain.Tweet
 }
 
-func PublishTweet(tweetToPublish *domain.Tweet) (int, error) {
+func NewTweetManager() *TweetManager {
+	tm := &TweetManager{tweets: make([]*domain.Tweet, 0), tweetsMap: make(map[string][]*domain.Tweet)}
+	return tm
+}
+
+func (tm *TweetManager) PublishTweet(tweetToPublish *domain.Tweet) (int, error) {
+
 	now := time.Now()
 	tweetToPublish.Date = &now
-	tweetToPublish.ID = len(tweets) + 1
-	tweets = append(tweets, tweetToPublish)
+	tweetToPublish.ID = len(tm.tweets) + 1
+	tm.tweets = append(tm.tweets, tweetToPublish)
 
-	tweetsMap[tweetToPublish.User] = GetTweetsByUser(tweetToPublish.User)
+	tm.tweetsMap[tweetToPublish.User] = tm.GetTweetsByUser(tweetToPublish.User)
 
 	/*if tweet.User == "" {
 		return fmt.Errorf("user is required")
@@ -39,20 +39,20 @@ func PublishTweet(tweetToPublish *domain.Tweet) (int, error) {
 	return tweetToPublish.ID, fmt.Errorf("nil")
 }
 
-func GetTweets() []*domain.Tweet {
-	return tweets
+func (tm *TweetManager) GetTweets() []*domain.Tweet {
+	return tm.tweets
 }
 
-func GetTweetById(id int) *domain.Tweet {
+func (tm *TweetManager) GetTweetById(id int) *domain.Tweet {
 
-	return tweets[id-1]
+	return tm.tweets[id-1]
 
 }
 
-func CountTweetsByUser(user string) int {
+func (tm *TweetManager) CountTweetsByUser(user string) int {
 
 	var sum int = 0
-	for _, valor := range tweets {
+	for _, valor := range tm.tweets {
 
 		if valor.User == user {
 			sum++
@@ -61,11 +61,11 @@ func CountTweetsByUser(user string) int {
 	return sum
 }
 
-func GetTweetsByUser(user string) []*domain.Tweet {
+func (tm *TweetManager) GetTweetsByUser(user string) []*domain.Tweet {
 
 	var aux []*domain.Tweet
 
-	for _, valor := range tweets {
+	for _, valor := range tm.tweets {
 
 		if valor.User == user {
 			aux = append(aux, valor)
