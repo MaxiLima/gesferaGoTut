@@ -130,5 +130,6 @@ func (tm *TweetManager) SearchTweetsContaining(query string, tweets chan domain.
 				tweets <- valor
 			}
 		}
+		close(tweets)
 	}()
 }
