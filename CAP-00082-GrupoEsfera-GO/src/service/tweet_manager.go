@@ -2,10 +2,11 @@ package service
 
 import (
 	"fmt"
-	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/domain"
 	"os"
 	"strings"
 	"time"
+
+	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/domain"
 )
 
 type TweetWriter interface {
@@ -69,18 +70,17 @@ func (tm *TweetManager) PublishTweet(tweetToPublish domain.Tweet) (int, error) {
 	tm.Tweets = append(tm.Tweets, tweetToPublish)
 	tm.TweetsMap[tweetToPublish.GetUser()] = tm.GetTweetsByUser(tweetToPublish.GetUser())
 
-	/*if tweet.User == "" {
-		return fmt.Errorf("user is required")
+	if tweetToPublish.GetUser() == "" {
+		return -1, fmt.Errorf("user is required")
 	}
-	if tweet.Text == "" {
-		return fmt.Errorf("text is required")
+	if tweetToPublish.GetText() == "" {
+		return -1, fmt.Errorf("text is required")
 	}
-	if len(tweet.Text) > 140 {
-		return fmt.Errorf("text cannot exced 140 chars")
+	if len(tweetToPublish.GetText()) > 140 {
+		return -1, fmt.Errorf("text cannot exced 140 chars")
 	}
 
-	return nil*/
-	return tweetToPublish.GetID(), fmt.Errorf("nil")
+	return tweetToPublish.GetID(), nil
 }
 
 func (tm *TweetManager) GetTweets() []domain.Tweet {

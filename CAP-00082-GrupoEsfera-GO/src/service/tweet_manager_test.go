@@ -2,10 +2,14 @@ package service_test
 
 import (
 	"fmt"
-	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/domain"
-	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/service"
 	"strings"
 	"testing"
+
+	//"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/domain"
+	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/domain"
+	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/service"
+
+	//"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/service"
 
 	"github.com/stretchr/testify/assert"
 )

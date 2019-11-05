@@ -1,14 +1,21 @@
 package main
 
 import (
-	"github.com/abiosoft/ishell"
-	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/domain"
-	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/service"
+	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/rest"
+	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/service"
 )
 
 func main() {
 
-	shell := ishell.New()
+	var tweetWriter service.TweetWriter
+	tweetWriter = service.NewMemoryTweetWriter()
+	tweetManager := service.NewTweetManager(tweetWriter)
+
+	gs := rest.NewGinServer(tweetManager)
+
+	gs.StartServer()
+
+	/*shell := ishell.New()
 	shell.SetPrompt("Tweeter >> ")
 	shell.Print("Type 'help' to know commands\n")
 
@@ -63,5 +70,5 @@ func main() {
 	})
 
 	shell.Run()
-
+	*/
 }
