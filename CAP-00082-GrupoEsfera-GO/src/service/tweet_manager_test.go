@@ -114,7 +114,9 @@ func TestTweetWhichExceeding140CharactersIsNotPublished(t *testing.T) {
 func TestCanPublishAndRetrieveMoreThanOneTweet(t *testing.T) {
 	// Initialization
 
-	tm := service.NewTweetManager()
+	var tweetWriter service.TweetWriter
+	tweetWriter = service.NewMemoryTweetWriter() // Mock implementation
+	tm := service.NewTweetManager(tweetWriter)
 
 	var tweet, secondTweet *domain.TextTweet // Fill the Tweets with data
 
@@ -150,7 +152,9 @@ func TestCanRetrieveTweetById(t *testing.T) {
 
 	// Initialization
 
-	tm := service.NewTweetManager()
+	var tweetWriter service.TweetWriter
+	tweetWriter = service.NewMemoryTweetWriter() // Mock implementation
+	tm := service.NewTweetManager(tweetWriter)
 
 	var tweet *domain.TextTweet
 	var id int
@@ -180,7 +184,9 @@ func validTweetId(t *testing.T, tweet domain.Tweet, id int, user, text string) {
 func TestCanCountTheTweetsSentByAnUser(t *testing.T) {
 	// Initialization
 
-	tm := service.NewTweetManager()
+	var tweetWriter service.TweetWriter
+	tweetWriter = service.NewMemoryTweetWriter() // Mock implementation
+	tm := service.NewTweetManager(tweetWriter)
 	var tweet, secondTweet, thirdTweet *domain.TextTweet
 	user := "grupoesfera"
 	anotherUser := "nick"
@@ -202,8 +208,9 @@ func TestCanCountTheTweetsSentByAnUser(t *testing.T) {
 
 func TestCanRetrieveTheTweetsSentByAnUser(t *testing.T) {
 	// Initialization
-
-	tm := service.NewTweetManager()
+	var tweetWriter service.TweetWriter
+	tweetWriter = service.NewMemoryTweetWriter() // Mock implementation
+	tm := service.NewTweetManager(tweetWriter)
 
 	var textTweet, secondTextTweet, thirdTextTweet *domain.TextTweet
 	user := "grupoesfera"
@@ -234,4 +241,30 @@ func TestCanRetrieveTheTweetsSentByAnUser(t *testing.T) {
 	validTweet(t, firstPublishedTweet, user, text)
 	validTweet(t, secondPublishedTweet, user, secondText)
 
+}
+
+func TestPublishedTweetIsSavedToExternalResource(t *testing.T) {
+
+	// Initialization
+	var tweetWriter service.TweetWriter
+	tweetWriter = service.NewMemoryTweetWriter() // Mock implementation
+	tweetManager := service.NewTweetManager(tweetWriter)
+
+	var tweet domain.Tweet // Fill the tweet with data
+	tweet = domain.NewTextTweet("eze", "holis")
+	// Operation
+	id, _ := tweetManager.PublishTweet(tweet)
+
+	// Validation
+	memoryWriter := (tweetWriter).(*service.MemoryTweetWriter)
+	memoryWriter.Write(tweet)
+	savedTweet := memoryWriter.GetLastSavedTweet()
+
+	if savedTweet == nil {
+		t.Errorf("No se encontro ningun tweet")
+	}
+
+	if savedTweet.GetID() != id {
+		t.Errorf("The expected tweetID is %d but was %d", savedTweet.GetID(), id)
+	}
 }

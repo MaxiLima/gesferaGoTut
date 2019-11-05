@@ -11,7 +11,10 @@ func main() {
 	shell := ishell.New()
 	shell.SetPrompt("Tweeter >> ")
 	shell.Print("Type 'help' to know commands\n")
-	tm := service.NewTweetManager()
+
+	var ftw service.TweetWriter
+	ftw = service.NewFileTweetWriter() // Mock implementation
+	tm := service.NewTweetManager(ftw)
 
 	shell.AddCmd(&ishell.Cmd{
 		Name: "publishTweet",
@@ -35,6 +38,10 @@ func main() {
 			tm.PublishTweet(textTweet)
 
 			c.Print("TextTweet sent\n")
+
+			tw := service.NewFileTweetWriter()
+
+			tw.Write(textTweet)
 
 			return
 		},
