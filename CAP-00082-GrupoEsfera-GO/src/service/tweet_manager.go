@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/domain"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -119,4 +120,15 @@ func (tm *TweetManager) GetTweetsByUser(user string) []domain.Tweet {
 		}
 	}
 	return aux
+}
+
+func (tm *TweetManager) SearchTweetsContaining(query string, tweets chan domain.Tweet) {
+	go func() {
+		for _, valor := range tm.Tweets {
+
+			if strings.Contains(valor.GetText(), query) {
+				tweets <- valor
+			}
+		}
+	}()
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/domain"
 	"gitlab.grupoesfera.com.ar/gesferaGoTut/CAP-00082-GrupoEsfera-GO/src/service"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -266,5 +267,34 @@ func TestPublishedTweetIsSavedToExternalResource(t *testing.T) {
 
 	if savedTweet.GetID() != id {
 		t.Errorf("The expected tweetID is %d but was %d", savedTweet.GetID(), id)
+	}
+}
+
+func TestCanSearchForTweetContainingText(t *testing.T) {
+	// Initialization
+	var tweetWriter service.TweetWriter
+	tweetWriter = service.NewMemoryTweetWriter()
+	tweetManager := service.NewTweetManager(tweetWriter)
+
+	// Create and publish a tweet
+	var tweet domain.Tweet // Fill the tweet with data
+	tweet = domain.NewTextTweet("eze", "this is my first tweet")
+	// Operation
+	tweetManager.PublishTweet(tweet)
+
+	// Operation
+	searchResult := make(chan domain.Tweet)
+	query := "first"
+	tweetManager.SearchTweetsContaining(query, searchResult)
+
+	// Validation
+	foundTweet := <-searchResult
+
+	if foundTweet == nil {
+		t.Errorf("No se encontro ningun tweet conteniendo %s", query)
+
+	}
+	if !strings.Contains(foundTweet.GetText(), query) {
+		t.Errorf("El tweet Nº%d no contiene %s", foundTweet.GetID(), query)
 	}
 }
