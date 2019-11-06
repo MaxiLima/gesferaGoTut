@@ -2,6 +2,7 @@ package rest
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.grupoesfera.com.ar/CAP-00082-GrupoEsfera-GO/src/domain"
@@ -35,6 +36,7 @@ func (gs *GinServer) StartServer() {
 	router := gin.Default()
 
 	router.GET("/tweets", gs.getTweets)
+	router.GET("/tweets/:idTweet", gs.getTweetsById)
 	router.POST("/publishTextTweet", gs.publishTextTweet)
 	router.POST("/publishImageTweet", gs.publishTextTweet)
 	router.POST("/publishQuotedTweet", gs.publishQuotedTweet)
@@ -44,6 +46,13 @@ func (gs *GinServer) StartServer() {
 func (gs *GinServer) getTweets(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gs.tweetManager.GetTweets())
+}
+
+func (gs *GinServer) getTweetsById(c *gin.Context) {
+
+	id, _ := strconv.Atoi(c.Params.ByName("idTweet"))
+
+	c.JSON(http.StatusOK, gs.tweetManager.GetTweetById(id))
 }
 
 func (gs *GinServer) publishTextTweet(c *gin.Context) {
